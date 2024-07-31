@@ -8,7 +8,6 @@ import ProfilePage from './pages/ProfilePage/ProfilePage';
 import ReportPage from './pages/ReportPage/ReportPage';
 import ReviewPage from './pages/ReviewPage/ReviewPage';
 import MatchingPage from './pages/MatchingPage/MatchingPage';
-import ChooseAvatarPage from './pages/ChooseAvatarPage/ChooseAvatarPage';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import VideoChatRoute from './components/VideoChatRoute';
@@ -43,10 +42,6 @@ function AppRouter() {
             <Route
                 path="/matching"
                 element={<ProtectedRoute component={MatchingPage} />}
-            />
-            <Route
-                path="/choose-avatar"
-                element={<ProtectedRoute component={ChooseAvatarPage} />}
             />
             <Route
                 path="/choose-raccoon"
