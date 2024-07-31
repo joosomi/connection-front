@@ -3,23 +3,15 @@ import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { OpenVidu } from 'openvidu-browser';
 import OpenViduVideo from './OpenViduVideo';
-import { apiCall, apiCallWithFileData } from '../../utils/apiCall';
+import { apiCall } from '../../utils/apiCall';
 import { API_LIST } from '../../utils/apiList';
-import settingsIcon from '../../assets/settings-icon.jpg'; // 설정 아이콘
 import { getToken, getTokenForTest } from '../../services/openviduService';
-import SettingMenu from './SettingMenu';
 import io from 'socket.io-client';
 import RaccoonHand from '../../components/common/RaccoonHand';
 import MovingDogs from './MovingDogs';
-import forestBackground from '../../assets/forest-background.jpg'; // 배경 이미지 추가
 import logo from '../../assets/barking-talk.png'; // 로고 이미지 경로
-import RaccoonImg from '../../assets/WelcomeRaccoon.png'; // WelcomeModal 라쿤 이미지 추가
 import AIimg from '../../assets/ai.png'; // AI 이미지 추가
-import raccoonImage from '../../assets/raccoon.png';
-import start_modalSound from '../../assets/start_modal_sound.mp3';
-import endModalSound from '../../assets/end_modal_sound.mp3';
 import start_sound from '../../assets/sounds/start.mp3';
-import face_sound from '../../assets/sounds/face.mp3';
 import correct_sound from '../../assets/sounds/correct.mp3';
 import wrong_sound from '../../assets/sounds/wrong.mp3';
 import topic_sound from '../../assets/sounds/topic.mp3';
@@ -52,7 +44,7 @@ const VideoChatPage = () => {
         useState(0);
 
     const [quizInProgress, setQuizInProgress] = useState(false);
-    const [quizQuestion, setQuizQuestion] = useState('');
+
     const [quizAnswer, setQuizAnswer] = useState('');
     const quizQuestionRef = useRef('');
     const quizAnswerRef = useRef('');
@@ -60,11 +52,6 @@ const VideoChatPage = () => {
     const [showInitialModal, setShowInitialModal] = useState(true);
     const [showQuizSuccess, setShowQuizSuccess] = useState(false);
     const [showQuizFailure, setShowQuizFailure] = useState(false);
-
-    const [showRecommendedTopics, setShowRecommendedTopics] = useState(false);
-    const [showQuizResult, setShowQuizResult] = useState(false);
-
-    // const [showWelcomeModal, setShowWelcomeModal] = useState(false); // 자기소개 상태
 
     const quizModeRef = useRef(quizMode);
     const targetUserIndexRef = useRef(0);
@@ -88,20 +75,6 @@ const VideoChatPage = () => {
 
     // targetUserIndex 상태 추가
     const [targetUserIndex, setTargetUserIndex] = useState(null);
-
-    // const handleLogoClick = () => {
-    //     if (!isMissionInProgress && !showFaceRevealModal) {
-    //         const audio = new Audio(face_sound);
-    //         audio.play();
-    //         setShowFaceRevealModal(true);
-    //         const textToSpeak =
-    //             '얼굴 공개 타아아임! 드디어 진짜 우리의 모습을 볼 시간이에요!';
-    //         setTimeout(() => {
-    //             speakText(textToSpeak);
-    //         }, 1500);
-    //         setTimeout(() => setShowFaceRevealModal(false), 5000);
-    //     }
-    // };
 
     const handleQuizInProgress = (payload) => {
         console.log('자식컴포넌트로부터 넘겨받은 데이터 -> ', payload);
@@ -549,17 +522,6 @@ const VideoChatPage = () => {
                 }, 5000);
             });
 
-            // AI응답 처리
-            session.on('signal:AIanswer', (event) => {
-                setIsAnswerModalOpen(true);
-                speakText(
-                    '김밥천국 첫 데이트? 그건 좀 오반데ㅋㅋㅋ AI도 당황할 듯!'
-                );
-                setAiResponse(
-                    '김밥천국 첫 데이트? 그건 좀 오반데ㅋㅋㅋ AI도 당황할 듯!'
-                );
-            });
-
             // 세션 연결 종료 시 (타이머 초과에 의한 종료)
             session.on('sessionDisconnected', (event) => {
                 console.log('Session disconnected:', event);
@@ -597,16 +559,6 @@ const VideoChatPage = () => {
                     return newSet;
                 });
             });
-
-            // // WelcomeModal 이벤트 처리
-            // socket.current.on('welcome', () => {
-            //     setTimeout(() => {
-            //         setShowWelcomeModal(true);
-            //         setTimeout(() => {
-            //             setShowWelcomeModal(false);
-            //         }, 5000);
-            //     }, 3000); // 3초 후에 모달을 보여줌
-            // });
 
             const allowedSessionIdList = [
                 'sessionA',
@@ -890,62 +842,6 @@ const VideoChatPage = () => {
 
     const [useTestTopics, setUseTestTopics] = useState(false);
 
-    // const QuizResultModal = ({ success, answer, onClose }) => {
-    //     return (
-    //         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    //             <div className="bg-white bg-opacity-95 w-3/4 p-5 rounded-xl shadow-lg transform hover:scale-102 transition-transform duration-300 max-w-lg">
-    //                 <h1
-    //                     className={`text-2xl font-bold mb-3 text-center border-b-2 pb-2 ${
-    //                         success
-    //                             ? 'text-green-600 border-green-400'
-    //                             : 'text-blue-600 border-blue-400'
-    //                     }`}
-    //                 >
-    //                     {success ? '미션 성공 !!' : '미션 실패 ..'}
-    //                 </h1>
-    //                 {success && (
-    //                     <h2 className="text-[#2c4021] text-xl font-semibold text-center mt-3">
-    //                         정답: "{answer}"
-    //                     </h2>
-    //                 )}
-    //                 <button
-    //                     onClick={onClose}
-    //                     className="mt-4 bg-[#7cb772] text-white px-4 py-2 rounded-full hover:bg-[#5c9f52] transition-colors duration-300"
-    //                 >
-    //                     닫기
-    //                 </button>
-    //             </div>
-    //         </div>
-    //     );
-    // };
-    // const RecommendedTopicsModal = ({ topics, onClose }) => {
-    //     return (
-    //         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    //             <div className="bg-white bg-opacity-95 w-3/4 p-5 rounded-xl shadow-lg transform hover:scale-102 transition-transform duration-300 max-w-lg">
-    //                 <h3 className="text-2xl font-semibold mb-3 text-center border-b-2 border-[#7cb772] pb-2">
-    //                     추천 주제
-    //                 </h3>
-    //                 <ul className="list-disc list-inside">
-    //                     {topics.map((topic, index) => (
-    //                         <li
-    //                             key={index}
-    //                             className="text-xl text-gray-700 mb-2"
-    //                         >
-    //                             {topic}
-    //                         </li>
-    //                     ))}
-    //                 </ul>
-    //                 <button
-    //                     onClick={onClose}
-    //                     className="mt-4 bg-[#7cb772] text-white px-4 py-2 rounded-full hover:bg-[#5c9f52] transition-colors duration-300"
-    //                 >
-    //                     닫기
-    //                 </button>
-    //             </div>
-    //         </div>
-    //     );
-    // };
-
     const maskMBTI = (mbti) => {
         if (mbti.length !== 4) return mbti;
         return `${mbti[0]}--${mbti[3]}`;
@@ -1029,115 +925,6 @@ const VideoChatPage = () => {
             console.error('This browser does not support speech synthesis.');
         }
     };
-
-    // // TTS 기능 추가
-    // const handleTTS = useCallback(
-    //     (username, message) => {
-    //         const utterance = new SpeechSynthesisUtterance(
-    //             `${username}님, ${message}`
-    //         );
-    //         utterance.lang = 'ko-KR';
-    //         utterance.onend = () => {
-    //             // TTS가 끝나면 스트림을 종료합니다.
-    //             if (ttsStreamRef.current) {
-    //                 const tracks = ttsStreamRef.current.getTracks();
-    //                 tracks.forEach((track) => track.stop());
-    //                 ttsStreamRef.current = null;
-    //             }
-    //         };
-    //         window.speechSynthesis.speak(utterance);
-
-    //         // Web Audio API를 사용하여 TTS를 MediaStream으로 변환
-    //         const audioContext = new (window.AudioContext ||
-    //             window.webkitAudioContext)();
-    //         const destination = audioContext.createMediaStreamDestination();
-    //         const source = audioContext.createMediaElementSource(
-    //             utterance.audioElement
-    //         );
-    //         source.connect(destination);
-    //         source.connect(audioContext.destination);
-
-    //         // TTS 스트림을 OpenVidu로 송출
-    //         const ttsStream = destination.stream;
-    //         ttsStreamRef.current = ttsStream;
-    //         const ttsPublisher = OV.initPublisher(undefined, {
-    //             audioSource: ttsStream.getAudioTracks()[0],
-    //             videoSource: null,
-    //             publishAudio: true,
-    //             publishVideo: false,
-    //         });
-    //         session.publish(ttsPublisher);
-    //     },
-    //     [OV, session]
-    // );
-
-    // // TTS 기능 비활성화
-    // const startInactivityTimer = () => {
-    //     clearTimeout(inactivityTimeoutRef.current);
-    //     inactivityTimeoutRef.current = setTimeout(() => {
-    //         handleTTS(userInfo.username, '말하세요');
-    //     }, 10000); // 10초 후에 "말하세요" TTS 재생
-    // };
-
-    // const resetInactivityTimer = () => {
-    //     clearTimeout(inactivityTimeoutRef.current);
-    // };
-
-    // // 자기소개 이벤트 모달
-    // const WelcomeModal = ({ sessionData }) => {
-    //     if (!sessionData || sessionData.length === 0) {
-    //         return null;
-    //     }
-
-    //     console.log('--------------WelcomeModal TRUE--------------');
-
-    //     // 모든 사용자에게 동일한 순서로 닉네임을 정렬되도록
-    //     const sortedUsers = sessionData
-    //         .slice()
-    //         .sort((a, b) => a.nickname.localeCompare(b.nickname));
-    //     const nicknames = sortedUsers.map((user) => user.nickname).join(', ');
-
-    //     return (
-    //         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    //             <div className="bg-gradient-to-br from-green-100 to-green-200 p-8 rounded-2xl shadow-2xl max-w-2xl w-full flex items-center transform transition-transform scale-105 hover:scale-110">
-    //                 <div className="hidden md:block md:w-1/3">
-    //                     <img
-    //                         src={RaccoonImg}
-    //                         alt="Raccoon Mascot"
-    //                         className="w-full h-auto"
-    //                     />
-    //                 </div>
-    //                 <div className="w-full md:w-2/3 text-center md:text-left">
-    //                     <h2 className="text-2xl font-extrabold mb-4 text-green-800">
-    //                         안녕, 만나게 되어서 반가워! 난 라쿤이야!
-    //                         <br />
-    //                         {nicknames}순으로 소개해줘~
-    //                         <br />
-    //                         그리고나서 자연스럽게 대화해보자!
-    //                     </h2>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     );
-    // };
-
-    // const FaceRevealModal = () => {
-    //     return (
-    //         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 animate-fadeIn">
-    //             <div className="bg-gradient-to-br from-yellow-200 via-orange-300 to-red-400 p-12 rounded-3xl shadow-2xl max-w-5xl w-11/12 text-center transform transition-all duration-700 scale-105 hover:scale-110 animate-slideIn">
-    //                 <h2 className="text-7xl font-extrabold mb-8 text-orange-800 animate-pulse">
-    //                     🎭 얼굴 공개 타임!
-    //                 </h2>
-    //                 <div className="text-5xl font-bold text-orange-800 bg-yellow-100 bg-opacity-80 p-8 rounded-xl shadow-inner inline-block transform -rotate-2 hover:rotate-2 transition-transform duration-300 animate-float">
-    //                     "드디어 진짜 우리의 모습을 볼 시간이에요!"
-    //                 </div>
-    //                 <p className="mt-8 text-3xl text-orange-700 animate-pulse">
-    //                     이 창은 5초 후 자동으로 사라집니다...
-    //                 </p>
-    //             </div>
-    //         </div>
-    //     );
-    // };
 
     // AI 응답 모달 닫기 함수
     const closeAnswerModal = () => {
@@ -1281,23 +1068,6 @@ const VideoChatPage = () => {
                                             ))}
                                     </div>
                                 </div>
-
-                                {/* <img
-                                    src={settingsIcon}
-                                    alt="설정"
-                                    className="absolute top-3 right-3 w-9 h-9 cursor-pointer bg-white rounded-full p-1.5 shadow-md hover:bg-gray-100 transition-colors duration-300"
-                                    onClick={toggleSettings}
-                                /> */}
-                                {/* {showSettings && (
-                                    <div className="absolute top-14 right-3 z-50">
-                                        <SettingMenu
-                                            publisher={publisher}
-                                            onMirroredChange={
-                                                handleMirrorChange
-                                            }
-                                        />
-                                    </div>
-                                )} */}
                             </div>
                         )}
                         {subscribers.map((subscriber, index) => (
@@ -1552,8 +1322,6 @@ const VideoChatPage = () => {
                 </div>
             )}
             {showInitialModal && <InitialQuestionModal />}
-            {/* {showWelcomeModal && <WelcomeModal/>} */}
-            {/* {showFaceRevealModal && <FaceRevealModal />} */}
         </div>
     );
 };
