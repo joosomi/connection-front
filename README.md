@@ -1,17 +1,41 @@
-# React + Vite
+# 크래프톤 정글 5기 나만의 무기: Coonnection
+# 목차
 
-# 프로젝트 구동 가이드
+1. [프로젝트 소개](#lignin)
+2. [Architecture](#arch)
+3. [포스터](#poster)
 
-step1. 프로젝트를 clone 받는다\
-step2. 프로젝트 루트 경로에서 터미널을 연다\
-step3. npm install (package.json에 명시된 의존성 파일 및 라이브러리 다운로드)\
-step4. npm run dev
 
-# Getting Started with Create React App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<a name="lignin"></a>
+## 프로젝트 소개
+관심사 기반으로 매칭된 사용자들이 마스크를 쓰고 비디오 채팅을 통해 대화할 수 있는 웹 서비스!
 
-Currently, two official plugins are available:
+**프로젝트 기간** : 2024.06.20 ~ 2024.07.27(5주)
 
--   [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
--   [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**5명의 팀원** : [김세연(팀장)](https://github.com/syk25), [김도연](https://github.com/doyeon012), [최상욱](https://github.com/SamChoi-94), [주소미](https://github.com/joosomi), [심우정](https://github.com/ShimWooJeong)
+
+**기술 스택**
+
+| 분류     | 기술                                                         |
+| -------- | :----------------------------------------------------------- |
+| Frontend | <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=000000"/> <img src="https://img.shields.io/badge/WebRTC-333333?style=for-the-badge&logo=WebRTC&logoColor=FFFFFF"/> |
+| Backend  | <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=FFFFFF"/> <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=FastAPI&logoColor=FFFFFF"/> <img src="https://img.shields.io/badge/OpenVidu-F7901E?style=for-the-badge&logo=OpenVidu&logoColor=FFFFFF"/> |
+| Database | <img src="https://img.shields.io/badge/mongodb-47A248?style=for-the-badge&logo=mongodb&logoColor=FFFFFF"/><img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=FFFFFF"/><img src="https://img.shields.io/badge/amazons3-569A31?style=for-the-badge&logo=amazons3&logoColor=FFFFFF"/> |
+| Infra    | <img src="https://img.shields.io/badge/amazonec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=FFFFFF"/><img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=FFFFFF"/> |
+
+
+-----
+
+
+
+<a name="arch"></a>
+
+## Architecture
+![lignin-architecture](https://github.com/jungle-dogtalk/.github/blob/main/profile/lignin-architecture.png?raw=true)
+
+
+<a name="poster"></a>
+
+## 포스터
+![lignin-poster](https://github.com/jungle-dogtalk/.github/blob/main/profile/lignin-poster.png?raw=true)
